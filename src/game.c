@@ -3,6 +3,96 @@
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
 
+typedef struct node{
+	int prior;
+	void *data;
+	node *next;
+} node;
+
+typedef struct PriorityQueue{
+	node *head;
+	int len;
+	size_t size;
+} PriorityQueue;
+
+PriorityQueue *pq_new(size_t elementSize)
+{
+	new_p *new_p = (PriorityQueue *)malloc(sizeof(PriorityQueue));
+	new_p->len = 0;
+	new_p->size = elementSize;
+	new_p->head = NULL;
+}
+
+void* pq_toArray(PriorityQueue *pq)
+{
+	void* ret = malloc((pq->len) * (pq->size));
+	char* ptr = (char*)ret;
+	for (node* cur = pq->head; cur->next; cur = cur->next)
+	{
+		memcpy(ptr, cur->data, (pq->size));
+		ptr += (pq->size);
+	}
+	return ret;
+}
+
+node *create_node(void *data, int prior)
+{
+	node *new_node;
+	new_node = (node *)malloc(sizeof(node));
+	new_node->data = data;
+	new_node->next = NULL;
+	return new_node;
+}
+
+void *pq_delete_min(PriorityQueue *pq)
+{
+	node *ret = pq->head;
+	head = head->next;
+}
+
+void *pq_delete_max(PriorityQueue *pq) 
+{
+	node* cur = head;
+	node* prev = head;
+	while (cur->next)
+	{
+		if (cur != head)
+			prev = prev->next;
+		cur = cur->next;
+	}
+	prev->next = NULL;
+	return cur;
+}
+
+void pq_insert(PriorotyQueue *pq, void *data, int priority)
+{
+	node *newN = create_node(data, priority);
+	node* cur = head;
+	node* prev = head;
+	if (!cur) {
+		head = newN;
+	}
+	else{
+		while (cur->next && cur->next->prior <= priority) 
+		{
+			if (cur != head)
+				prev = prev->next;
+			cur = cur->next;
+		}
+		if (cur->prior > priority) 
+		{
+			prev->next = newN;
+			newN->next = cur;
+		}
+		else
+		{
+			cur->next = newN;
+		}
+		
+	}
+}
+
+
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
