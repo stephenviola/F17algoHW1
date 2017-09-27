@@ -3,7 +3,6 @@
 #include "gf2d_sprite.h"
 #include "simple_logger.h"
 #include <stdio.h>
-#include "PriorityQueue.h"
 
 /*----------------------------------NODE------CLASS----------------------------------------------*/
 
